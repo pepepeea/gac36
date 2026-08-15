@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reportes y Exportación - GastroControl360</title>
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body>
+    <!-- Menú Lateral Fijo para Páginas Internas -->
+    <div class="sidebar" id="sidebar-nav">
+        <h2>GastroControl360</h2>
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="catalogo-insumos.html">Catálogo Insumos</a>
+        <a href="catalogo-ventas.html">Catálogo Platillos</a>
+        <a href="compras.html">Compras</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="venta.html">Punto de Venta</a>
+        <a href="reportes.html" class="active">Reportes</a>
+        <a href="configuracion.html">Configuración</a>
+    </div>
+    
+    <div class="main-content">
+        <h1>Módulo de Reportes y Exportación a Excel</h1>
+        
+        <div class="grid-2">
+            <!-- Sección de Rentabilidad Teórica en Pantalla -->
+            <div class="card">
+                <h3>Margen de Rentabilidad por Platillo</h3>
+                <p style="color:#777; font-size:13px; margin-bottom:15px;">Muestra el beneficio bruto comparando el precio final contra el costo de insumos actual.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Platillo</th>
+                            <th>P. Venta</th>
+                            <th>Costo Insumos</th>
+                            <th>Margen Neto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-reporte-rentabilidad"></tbody>
+                </table>
+            </div>
+
+            <!-- Panel de Descarga y Conversión a Excel -->
+            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h3>Descarga de Libros y Reportes Contables</h3>
+                    <p style="color:#555; font-size:14px; line-height:1.6; margin-bottom:20px;">
+                        Haga clic en cualquiera de los botones de abajo para compilar la base de datos local y descargarla instantáneamente en formato compatible con Microsoft Excel (.csv).
+                    </p>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <button id="btn-excel-inventario" class="btn btn-dark" style="background-color: #2C3E50; padding: 14px; text-align: left;">📊 Descargar Inventario de Insumos Actual</button>
+                    <button id="btn-excel-compras" class="btn btn-dark" style="background-color: #2C3E50; padding: 14px; text-align: left;">📈 Descargar Historial Completo de Compras</button>
+                    <button id="btn-excel-ventas" class="btn btn-dark" style="background-color: #2C3E50; padding: 14px; text-align: left;">📉 Descargar Historial Completo de Ventas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/database.js"></script>
+    <script src="../js/reportes.js"></script>
+</body>
+</html>
