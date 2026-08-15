@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Configuración - GastroControl360</title>
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar-nav">
+        <h2>GastroControl360</h2>
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="catalogo-insumos.html">Catálogo Insumos</a>
+        <a href="catalogo-ventas.html">Catálogo Platillos</a>
+        <a href="compras.html">Compras</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="venta.html">Punto de Venta</a>
+        <a href="reportes.html">Reportes</a>
+        <a href="configuracion.html" class="active">Configuración</a>
+    </div>
+    
+    <div class="main-content">
+        <h1>Configuración del Sistema</h1>
+        <div class="grid-2">
+            <div class="card">
+                <h3>Datos del Restaurante / Empresa</h3>
+                <form id="form-config-empresa">
+                    <div class="form-group">
+                        <label>Nombre Comercial</label>
+                        <input type="text" id="conf-nombre" class="form-control" required placeholder="Ej. El Buen Sabor S.A.C.">
+                    </div>
+                    <div class="form-group">
+                        <label>RUC</label>
+                        <input type="text" id="conf-ruc" class="form-control" placeholder="Ej. 20123456789" maxlength="11">
+                    </div>
+                    <div class="form-group">
+                        <label>Dirección</label>
+                        <input type="text" id="conf-direccion" class="form-control" placeholder="Ej. Av. Larco 123">
+                    </div>
+                    <div class="form-group">
+                        <label>Moneda Base</label>
+                        <select id="conf-moneda" class="form-control">
+                            <option value="S/.">Soles (S/.)</option>
+                            <option value="$">Dólares ($)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Guardar Perfil</button>
+                </form>
+            </div>
+
+            <div class="card" style="border: 1px solid #D32F2F; display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                    <h3 style="color: #D32F2F;">Mantenimiento y Simulación</h3>
+                    <p style="color:#555; font-size:14px; line-height:1.5;">El botón de Simulación Avanzada inyectará compras y ventas en hora punta con quiebres de stock reales para evaluar los reportes de inmediato.</p>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
+                    <button id="btn-cargar-simulacion-avanzada" class="btn btn-dark" style="background-color:#2E7D32; padding:14px;">🚀 CARGAR SIMULACIÓN AVANZADA</button>
+                    <button id="btn-limpiar-db" class="btn btn-danger" style="padding:14px;">⚠️ REINICIAR BASE DE DATOS</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/database.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof cargarDatabase === "function") cargarDatabase();
+
+            const formEmpresa = document.getElementById("form-config-empresa");
+
+            function cargarCamposConfiguracion() {
+                if (!database.configuracion) database.configuracion = {};
+                document.getElementById("conf-nombre").value = database.configuracion.nombre || "";
+                document.getElementById("conf-ruc").value = database.configuracion.ruc || "";
+                document.getElementById("conf-direccion").value = database.configuracion.direccion || "";
+                document.getElementById("conf-moneda").value = database.configuracion.moneda || "S/.";
+            }
+
+            if (formEmpresa) {
+                formEmpresa.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    if (!database.configuracion) database.configuracion = {};
+                    database.configuracion.nombre = document.getElementById("conf-nombre").value.trim();
+                    database.configuracion.ruc = document.getElementById("conf-ruc").value.trim();
+                    database.configuracion.direccion = document.getElementById("conf-direccion").value.trim();
+                    database.configuracion.moneda = document.getElementById("conf-moneda").value;
+                    guardarDatabase();
+                    alert("¡Perfil actualizado con éxito!");
+                });
+            }
+
+            document.getElementById("btn-limpiar-db").addEventListener("click", () => {
+                if (confirm("¿Vaciar base de datos por completo?")) {
+                    localStorage.removeItem('GastroControl360_DB');
+                    alert("Base de datos limpia.");
+                    window.location.reload();
+                }
+            });
+
+            document.getElementById("btn-cargar-simulacion-avanzada").addEventListener("click", () => {
+                if (!confirm("¿Inyectar ecosistema de prueba? Se resetearán los datos actuales.")) return;
+                
+                localStorage.removeItem('GastroControl360_DB');
+                cargarDatabase();
+
+                database.configuracion = { nombre: "Rústica Cevichería", ruc: "20658493012", direccion: "Av. La Marina 123", moneda: "S/." };
+                database.insumos = [
+                    { codigo: "INS-000001", nombre: "Filete de Corvina", unidad: "Kg", estado: "Activo", stock: 0, costoPromedio: 0 },
+                    { codigo: "INS-000002", nombre: "Limón Sutil", unidad: "Kg", estado: "Activo", stock: 0, costoPromedio: 0 },
+                    { codigo: "INS-000003", nombre: "Cebolla Roja", unidad: "Kg", estado: "Activo", stock: 0, costoPromedio: 0 }
+                ];
+                database.correlativos.insumos = 3;
+                database.platillos = [{ codigo: "PLA-000001", nombre: "Ceviche Clásico", precio: 38.00, estado: "Activo" }];
+                database.correlativos.platillos = 1;
+                database.recetas = [
+                    { platilloId: "PLA-000001", insumoId: "INS-000001", cantidad: 0.200 },
+                    { platilloId: "PLA-000001", insumoId: "INS-000002", cantidad: 0.100 },
+                    { platilloId: "PLA-000001", insumoId: "INS-000003", cantidad: 0.050 }
+                ];
+                guardarDatabase();
+
+                registrarMovimientoAutomatico('Stock Inicial', 'INS-000001', 'INS-000001', 5, 150, 'Apertura Corvina');
+                registrarMovimientoAutomatico('Stock Inicial', 'INS-000002', 'INS-000002', 10, 40, 'Apertura Limón');
+                registrarMovimientoAutomatico('Stock Inicial', 'INS-000003', 'INS-000003', 5, 15, 'Apertura Cebolla');
+
+                const itemsFactura = [
+                    { insumoId: "INS-000001", cantidad: 10, costoTotal: 320 },
+                    { insumoId: "INS-000002", cantidad: 15, costoTotal: 75 }
+                ];
+                database.compras.push({ codigo: "COM-000001", proveedor: "Distribuidora Mar", fecha: new Date().toISOString().split('T')[0], documento: "F001-2345", total: 395, items: itemsFactura });
+                itemsFactura.forEach(item => {
+                    registrarMovimientoAutomatico('Compra', 'COM-000001', item.insumoId, item.cantidad, item.costoTotal, 'Compra Factura F001-2345');
+                });
+
+                const ventaItems = [{ platilloId: "PLA-000001", nombre: "Ceviche Clásico", cantidad: 40, precio: 38, subtotal: 1520 }];
+                database.ventas.push({ codigo: "VTA-000001", fecha: new Date().toISOString().split('T')[0], items: ventaItems, total: 1520, estado: "Completado" });
+                
+                ventaItems.forEach(item => {
+                    database.recetas.filter(r => r.platilloId === item.platilloId).forEach(r => {
+                        const cantDesc = r.cantidad * item.cantidad;
+                        const ins = database.insumos.find(i => i.codigo === r.insumoId);
+                        const costoUnit = ins ? (ins.costoPromedio || 0) : 0;
+                        const glosa = (ins && ins.stock >= cantDesc) ? `Venta Regular` : `⚠️ VENTA EN HORA PUNTA SIN COMPRA PREVIA`;
+                        registrarMovimientoAutomatico('Venta', 'VTA-000001', r.insumoId, -cantDesc, cantDesc * costoUnit, glosa);
+                    });
+                });
+
+                guardarDatabase();
+                alert("🚀 ¡Ecosistema de simulación inyectado!");
+                window.location.href = "../dashboard.html";
+            });
+
+            cargarCamposConfiguracion();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Insumos - GastroControl360</title>
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body>
+    <!-- Menú Lateral Fijo para Páginas Internas -->
+    <div class="sidebar" id="sidebar-nav">
+        <h2>GastroControl360</h2>
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="catalogo-insumos.html" class="active">Catálogo Insumos</a>
+        <a href="catalogo-ventas.html">Catálogo Platillos</a>
+        <a href="compras.html">Compras</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="venta.html">Punto de Venta</a>
+        <a href="reportes.html">Reportes</a>
+        <a href="configuracion.html">Configuración</a>
+    </div>
+    
+    <div class="main-content">
+        <h1>Catálogo de Insumos</h1>
+        
+        <div class="grid-2">
+            <!-- Formulario -->
+            <div class="card">
+                <h3>Registrar Insumo</h3>
+                <form id="form-insumo">
+                    <div class="form-group">
+                        <label>Nombre del Insumo</label>
+                        <input type="text" id="ins-nombre" class="form-control" required placeholder="Ej. Pollo, Papa, Aceite">
+                    </div>
+                    <div class="form-group">
+                        <label>Unidad de Medida</label>
+                        <select id="ins-unidad" class="form-control">
+                            <option value="Kg">Kilogramos (Kg)</option>
+                            <option value="Litros">Litros (L)</option>
+                            <option value="Unidad">Unidades (Und)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-top:10px;">
+                        <label style="display:inline-flex; align-items:center; cursor:pointer;">
+                            <input type="checkbox" id="ins-tiene-stock" style="margin-right:8px; width:16px; height:16px;"> ¿Desea registrar Stock Inicial?
+                        </label>
+                    </div>
+                    
+                    <div id="seccion-stock-inicial" style="display: none; border-top: 1px solid #E2E8F0; padding-top: 15px; margin-top:15px;">
+                        <div class="form-group">
+                            <label>Cantidad Inicial</label>
+                            <input type="number" id="ins-cantidad" class="form-control" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Costo Total Inicial (S/.)</label>
+                            <input type="number" id="ins-costo-total" class="form-control" step="0.01" value="0">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="margin-top:10px; width:100%;">Guardar Insumo</button>
+                </form>
+            </div>
+
+            <!-- Tabla -->
+            <div class="card">
+                <h3>Lista de Insumos Registrados</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Insumo</th>
+                            <th>Unidad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-insumos"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/database.js"></script>
+    <script src="../js/catalogo-insumos.js"></script>
+</body>
+</html>

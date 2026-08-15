@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario General - GastroControl360</title>
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body>
+    <!-- Sidebar Manual Fijo para Páginas Internas -->
+    <div class="sidebar" id="sidebar-nav">
+        <h2>GastroControl360</h2>
+        <a href="../dashboard.html">Dashboard</a>
+        <a href="catalogo-insumos.html">Catálogo Insumos</a>
+        <a href="catalogo-ventas.html">Catálogo Platillos</a>
+        <a href="compras.html">Compras</a>
+        <a href="inventario.html" class="active">Inventario</a>
+        <a href="venta.html">Punto de Venta</a>
+        <a href="reportes.html">Reportes</a>
+        <a href="configuracion.html">Configuración</a>
+    </div>
+    
+    <div class="main-content">
+        <h1>Inventario de Almacén e Historial Kardex</h1>
+        <div class="grid-2" style="grid-template-columns: 1fr 1.3fr;">
+            <div class="card">
+                <h3>Stock Disponible y Costo Promedio Ponderado</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Insumo</th>
+                            <th>Stock Real</th>
+                            <th>Costo Prom.</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-inventario"></tbody>
+                </table>
+            </div>
+            <div class="card" id="card-kardex" style="display:none;">
+                <h3>Kardex de Movimientos: <span id="kardex-titulo-insumo" style="color:#2E7D32"></span></h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cód Mov</th>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Cant. Transacción</th>
+                            <th>Costo Total</th>
+                            <th>Glosa / Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-kardex"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="../js/database.js"></script>
+    <script src="../js/inventario.js"></script>
+</body>
+</html>

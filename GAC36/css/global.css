@@ -1,0 +1,272 @@
+/* ==========================
+   GASTROCONTROL360
+   ESTILOS GLOBALES
+========================== */
+
+/* Reinicia los márgenes del navegador */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* Configuración general del sitio */
+body{
+    font-family:'Poppins', sans-serif;
+    background:#F5F7FA;
+    color:#333333;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Enlaces */
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* Botones */
+button{
+    cursor:pointer;
+    border:none;
+    outline:none;
+    font-family:'Poppins', sans-serif;
+}
+
+/* Inputs */
+input,
+select{
+    outline:none;
+    font-family:'Poppins', sans-serif;
+}
+
+/* Tablas */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+/* Listas */
+ul{
+    list-style:none;
+}
+
+/* ==========================
+   LOGIN
+========================== */
+
+.login{
+    width:380px;
+    background:white;
+    margin:80px auto;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    text-align:center;
+}
+
+.login img{
+    width:120px;
+    margin-bottom:20px;
+}
+
+.login h1{
+    color:#2E7D32;
+    margin-bottom:10px;
+}
+
+.login p{
+    color:#777;
+    margin-bottom:30px;
+}
+
+.login input{
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+    border:1px solid #DDD;
+    border-radius:8px;
+    font-size:15px;
+}
+
+.login button{
+    width:100%;
+    padding:14px;
+    background:#2E7D32;
+    color:white;
+    border-radius:8px;
+    font-size:16px;
+    transition:.3s;
+}
+
+.login button:hover{
+    background:#256428;
+}
+
+/* ==========================
+   ESTRUCTURA Y DASHBOARD (SaaS)
+========================== */
+
+/* Contenedor del menú lateral */
+.sidebar {
+    width: 260px;
+    background: #1C2434; /* Azul oscuro elegante para contraste */
+    color: #AEB7C0;
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 40px;
+    padding: 0 20px;
+    font-weight: 600;
+}
+
+.sidebar a {
+    padding: 14px 24px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+    font-weight: 400;
+}
+
+.sidebar a:hover, 
+.sidebar a.active {
+    background: #333A48;
+    color: white;
+    border-left: 4px solid #2E7D32; /* Línea verde de foco */
+}
+
+/* Contenedor de contenido principal */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    background: #F5F7FA;
+    overflow-y: auto;
+}
+
+.main-content h1 {
+    font-size: 26px;
+    color: #2C3E50;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* Tarjetas (Contenedores) */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    margin-bottom: 25px;
+    border: 1px solid #E2E8F0;
+}
+
+.card h3 {
+    font-size: 16px;
+    color: #2C3E50;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Elementos de Formulario Estilo .login */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748B;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    background: #FFFFFF;
+    transition: 0.3s;
+}
+
+.form-control:focus {
+    border-color: #2E7D32;
+}
+
+/* Botones del Sistema */
+.btn {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: 0.3s;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background: #2E7D32;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #256428;
+}
+
+.btn-danger {
+    background: #D32F2F;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #C62828;
+}
+
+.btn-dark {
+    background: #1C2434;
+    color: white;
+}
+
+.btn-dark:hover {
+    background: #2C3E50;
+}
+
+/* Tablas Administrativas */
+table {
+    margin-top: 10px;
+}
+
+table th {
+    background: #F8FAFC;
+    color: #64748B;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 14px;
+    text-align: left;
+    border-bottom: 2px solid #E2E8F0;
+}
+
+table td {
+    padding: 14px;
+    font-size: 14px;
+    color: #334155;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+table tr:hover td {
+    background: #F8FAFC;
+}
+
+/* Sistemas de Grillas limpios */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+.text-right { text-align: right; }

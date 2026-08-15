@@ -1,0 +1,91 @@
+/* Estilos para el detalle de Platillos y Recetas */
+.producto-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.platillo-header {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    border-left: 5px solid #3498db;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Recuadro de Costo de Producción Automático */
+.costo-box {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 6px;
+    text-align: right;
+}
+
+.costo-box small {
+    display: block;
+    font-size: 11px;
+    color: #bdc3c7;
+    text-transform: uppercase;
+}
+
+.costo-box span {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2ecc71;
+}
+
+/* Sistema de Pestañas (Tabs) Nav */
+.tabs-nav {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #7f8c8d;
+    margin-bottom: -2px;
+}
+
+.tab-button.active {
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
+}
+
+.tab-content {
+    display: none;
+    background: white;
+    padding: 10px 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}

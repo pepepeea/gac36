@@ -1,0 +1,125 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - GastroControl360</title>
+    <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+
+    <!-- Menú Lateral Fijo para la Raíz -->
+    <div class="sidebar" id="sidebar-nav">
+        <h2>GastroControl360</h2>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="pages/catalogo-insumos.html">Catálogo Insumos</a>
+        <a href="pages/catalogo-ventas.html">Catálogo Platillos</a>
+        <a href="pages/compras.html">Compras</a>
+        <a href="pages/inventario.html">Inventario</a>
+        <a href="pages/venta.html">Punto de Venta</a>
+        <a href="pages/reportes.html">Reportes</a>
+        <a href="pages/configuracion.html">Configuración</a>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="main-content">
+        <h1>Dashboard General</h1>
+        
+        <!-- Panel de Alertas de Stock Crítico (Se activa de forma automática) -->
+        <div class="card" id="contenedor-alertas-stock" style="margin-bottom:25px; border-left:6px solid #D32F2F; background-color:#FFF5F5; display:none;">
+            <h3 style="color:#D32F2F; margin-bottom:10px; font-weight:600;">⚠️ Insumos Críticos Detectados</h3>
+            <p style="color:#555; font-size:14px; margin-bottom:15px;">Los siguientes insumos se han agotado o registran stock negativo debido a ventas en horas punta sin compras ingresadas:</p>
+            <ul id="lista-alertas-criticas" style="padding-left:20px; font-size:14px; color:#333; line-height:2;">
+                <!-- Inyección dinámica -->
+            </ul>
+        </div>
+        
+        <!-- Bloques Financieros -->
+        <div class="grid-3">
+            <div class="card">
+                <label style="color:#777; font-size:13px; font-weight:500;">TOTAL EN COMPRAS</label>
+                <h2 id="dash-compras" style="color:#2C3E50; font-size:28px; margin-top:10px; font-weight:600;">S/. 0.00</h2>
+            </div>
+            
+            <div class="card">
+                <label style="color:#777; font-size:13px; font-weight:500;">TOTAL EN VENTAS</label>
+                <h2 id="dash-ventas" style="color:#2E7D32; font-size:28px; margin-top:10px; font-weight:600;">S/. 0.00</h2>
+            </div>
+            
+            <div class="card">
+                <label style="color:#777; font-size:13px; font-weight:500;">VALOR TOTAL DEL ALMACÉN</label>
+                <h2 id="dash-inventario" style="color:#64748B; font-size:28px; margin-top:10px; font-weight:600;">S/. 0.00</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Motor lógico del LocalStorage -->
+    <script src="js/database.js"></script>
+    
+    <!-- Lógica de Negocio y Alertas Unificadas en la Raíz -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Forzar lectura del LocalStorage al arrancar la pantalla
+            if (typeof cargarDatabase === "function") {
+                cargarDatabase();
+            }
+            
+            // 2. Procesar cálculos financieros en vivo
+            const totalCompras = database.compras.reduce((acc, c) => acc + (c.total || 0), 0);
+            const elementCompras = document.getElementById("dash-compras");
+            if (elementCompras) elementCompras.innerText = `S/. ${totalCompras.toFixed(2)}`;
+
+            const totalVentas = database.ventas.filter(v => v.estado !== "Anulado").reduce((acc, v) => acc + (v.total || 0), 0);
+            const elementVentas = document.getElementById("dash-ventas");
+            if (elementVentas) elementVentas.innerText = `S/. ${totalVentas.toFixed(2)}`;
+
+            // 3. Forzar el recálculo matemático de stocks antes de valorizar o evaluar alertas
+            let totalAlmacen = 0;
+            let conteoFaltantes = 0;
+            
+            const contenedorAlertas = document.getElementById("contenedor-alertas-stock");
+            const listaCriticos = document.getElementById("lista-alertas-criticas");
+            
+            if (listaCriticos) listaCriticos.innerHTML = "";
+
+            database.insumos.forEach(ins => {
+                // Ejecución obligatoria en caliente del motor de costos ponderados
+                if (typeof actualizarInventarioYCostos === "function") {
+                    actualizarInventarioYCostos(ins.codigo);
+                }
+                
+                const stockActual = ins.stock || 0;
+                const costoProm = ins.costoPromedio || 0;
+                
+                // Sumar a la valorización si el stock es positivo
+                if (stockActual > 0) {
+                    totalAlmacen += (stockActual * costoProm);
+                }
+
+                // DETECCIÓN FILTRADA: Si se fue a stock negativo por la hora punta, dispara la alerta
+                if (stockActual < 0) {
+                    conteoFaltantes++;
+                    if (listaCriticos) {
+                        const itemLi = document.createElement("li");
+                        itemLi.innerHTML = `El insumo <b>${ins.nombre} (${ins.codigo})</b> requiere abastecimiento urgente. Desfase en almacén: <span style="color:#D32F2F; font-weight:600;">${stockActual.toFixed(2)} ${ins.unidad}</span>`;
+                        listaCriticos.appendChild(itemLi);
+                    }
+                }
+            });
+
+            // Pintar valorización final en la caja del almacén
+            const elementInventario = document.getElementById("dash-inventario");
+            if (elementInventario) elementInventario.innerText = `S/. ${totalAlmacen.toFixed(2)}`;
+
+            // 4. Mostrar o esconder el panel de alertas rojas de forma inteligente
+            if (contenedorAlertas) {
+                if (conteoFaltantes > 0) {
+                    contenedorAlertas.style.display = "block";
+                } else {
+                    contenedorAlertas.style.display = "none";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
